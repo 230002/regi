@@ -12,7 +12,7 @@
 <body>
     <div class="bg-gray-200 flex justify-center items-center h-screen">
         <div class="calculator bg-white rounded p-8 shadow-md">
-            <form action="update.php" method="post">
+        <form id="calculator-form" action="update.php" method="post">
                 <input type="text" id="display" name="price" class="w-full mb-4 px-2 py-1 border rounded" readonly>
                 <button class="btn border w-12 h-8 mb-4">計上</button>
             </form>
@@ -70,6 +70,11 @@
                 localStorage.removeItem('displayValue');
             }
 
+            function clearDisplay() {
+            var display = document.getElementById('display');
+            display.value = "";
+            }
+
             function calculateTotal() {
                 var display = document.getElementById('display');
                 var expression = display.value;
@@ -96,6 +101,21 @@
                     alert("有効な値を入力するかまたはフィールドを空白にしておいてください。");
                 }
             }
+        // フォーム送信後にディスプレイをクリア
+        document.getElementById('calculator-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+
+            // データを送信するためにAjaxを使用
+            var formData = new FormData(this);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "update.php", true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    clearDisplay(); // ディスプレイをクリア
+                }
+            };
+            xhr.send(formData);
+        });
         </script>
 
     </div>
