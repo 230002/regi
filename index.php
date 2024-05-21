@@ -60,7 +60,7 @@
                 }
                 // 直前の文字が計算記号の場合はエラー文を表示して計算しない
                 var lastChar = display.value.slice(-1);
-                if (['+', '-', '*', '/'].includes(lastChar)) {
+                if (['+', '*',].includes(lastChar)) {
                     alert("連続して計算記号を入力することはできません");
                     return;
                 }
