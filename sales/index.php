@@ -29,17 +29,15 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     <table>
         <thead>
             <tr>
-                <th>売上日時</th>
-                <th>売上高</th>
+                <th style="border: 1px solid black;">売上日時</th>
+                <th style="border: 1px solid black;">売上高</th>
             </tr>
         </thead>
         <tbody>
             <?php foreach($sales as $sale): ?>
             <tr>
-                <td><?= $sale['created_at'] ?>　　</td>
-                <td style="text-align: right;"><?= $sale['price'] ?></td>
-                <td>円</td>
-            </tr>
+                <td style="border: 1px solid black;">　<?= $sale['created_at'] ?>　</td>
+                <td style="text-align: right; border: 1px solid black;">　<?= $sale['price'] ?>円</td>            </tr>
             <?php endforeach ?>
         </tbody>
     </table>
