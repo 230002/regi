@@ -45,11 +45,14 @@
                 }
             };
 
+            var taxCalculated = false; // Taxが計算されたかどうかを示すフラグ
+
             function addToDisplay(value) {
                 var display = document.getElementById('display');
                 display.value += value;
                 // データをローカルストレージに保存
                 localStorage.setItem('displayValue', display.value);
+                taxCalculated = false; // 数字が追加されたのでTaxが再度計算可能になる
             }
 
             function calculate(operator) {
@@ -67,6 +70,7 @@
                 display.value += operator;
                 // データをローカルストレージに保存
                 localStorage.setItem('displayValue', display.value);
+                taxCalculated = false; // 計算式が追加されたのでTaxが再度計算可能になる
             }
 
             function clearAll() {
@@ -74,6 +78,7 @@
                 display.value = "";
                 // ローカルストレージからデータを削除
                 localStorage.removeItem('displayValue');
+                taxCalculated = false; // クリアされたのでTaxが再度計算可能になる
             }
 
             function clearDisplay() {
@@ -94,9 +99,14 @@
                 display.value = result.toFixed(0); // 小数点以下を表示しないように変更
                 // データをローカルストレージに保存
                 localStorage.setItem('displayValue', result.toFixed(0));
+                taxCalculated = false; // 計算が完了したのでTaxが再度計算可能になる
             }
 
             function calculateTax() {
+                if (taxCalculated) {
+                    alert("Taxは既に計算されています。"); // Taxが既に計算されている場合は警告を表示して終了
+                    return;
+                }
                 var display = document.getElementById('display');
                 var inputValue = parseFloat(display.value);
                 if (!isNaN(inputValue)) {
@@ -105,6 +115,7 @@
                     display.value = totalPrice.toFixed(0);
                     // データをローカルストレージに保存
                     localStorage.setItem('displayValue', totalPrice.toFixed(0));
+                    taxCalculated = true; // Taxが計算されたことを記録
                 } else {
                     alert("有効な値を入力するかまたはフィールドを空白にしておいてください。");
                 }
