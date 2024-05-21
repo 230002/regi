@@ -17,7 +17,7 @@
                 <button class="btn border w-12 h-8 mb-4">計上</button>
             </form>
             <div class="grid grid-cols-4 gap-4">
-                <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('7')">7</button>
+            <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('7')">7</button>
                 <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('8')">8</button>
                 <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('9')">9</button>
                 <button class="btn border w-12 h-8 flex justify-center items-center" onclick="clearAll()">AC</button>
@@ -34,67 +34,69 @@
                 <a class="btn border w-12 h-8 flex justify-center items-center" href="sales/">売上</a>
                 <button class="btn border w-12 h-8 flex justify-center items-center" onclick="calculateTotal()">=</button>
             </div>
-    </div>
-            <!-- <div class="mt-5">
-                <a class="btn" href="sales/">売上</a>
-            </div>  -->
+        </div>
 
-            <script>
-        // ページ読み込み時にローカルストレージからデータを取得して表示
-        window.onload = function() {
-            var display = document.getElementById('display');
-            var savedValue = localStorage.getItem('displayValue');
-            if (savedValue) {
-                display.value = savedValue;
-            }
-        };
+        <script>
+            window.onload = function() {
+                var display = document.getElementById('display');
+                var savedValue = localStorage.getItem('displayValue');
+                if (savedValue) {
+                    display.value = savedValue;
+                }
+            };
 
-        function addToDisplay(value) {
-            var display = document.getElementById('display');
-            display.value += value;
-            // データをローカルストレージに保存
-            localStorage.setItem('displayValue', display.value);
-        }
-
-        function calculate(operator) {
-            var display = document.getElementById('display');
-            display.value += operator;
-            // データをローカルストレージに保存
-            localStorage.setItem('displayValue', display.value);
-        }
-
-        function clearAll() {
-            var display = document.getElementById('display');
-            display.value = "";
-            // ローカルストレージからデータを削除
-            localStorage.removeItem('displayValue');
-        }
-
-        function calculateTotal() {
-            var display = document.getElementById('display');
-            var expression = display.value;
-            var result = eval(expression);
-            display.value = result;
-            // データをローカルストレージに保存
-            localStorage.setItem('displayValue', result);
-        }
-
-        function calculateTax() {
-            var display = document.getElementById('display');
-            var inputValue = parseFloat(display.value);
-            if (!isNaN(inputValue)) {
-                var taxAmount = inputValue * 0.1;
-                var totalPrice = inputValue + taxAmount;
-                display.value = totalPrice.toFixed(0);
+            function addToDisplay(value) {
+                var display = document.getElementById('display');
+                display.value += value;
                 // データをローカルストレージに保存
-                localStorage.setItem('displayValue', totalPrice);
-            } else {
-                alert("有効な値を入力するかまたはフィールドを空白にしておいてください。");
+                localStorage.setItem('displayValue', display.value);
             }
-        }
 
+            function calculate(operator) {
+                var display = document.getElementById('display');
+                // "=" を最初に入力したときは計算を行わず、何も表示しない
+                if (operator === "=" && display.value === "") {
+                    return;
+                }
+                display.value += operator;
+                // データをローカルストレージに保存
+                localStorage.setItem('displayValue', display.value);
+            }
 
-    </script>
+            function clearAll() {
+                var display = document.getElementById('display');
+                display.value = "";
+                // ローカルストレージからデータを削除
+                localStorage.removeItem('displayValue');
+            }
+
+            function calculateTotal() {
+                var display = document.getElementById('display');
+                var expression = display.value;
+                // "=" を最初に入力したときは計算を行わず、何も表示しない
+                if (expression === "") {
+                    return;
+                }
+                var result = eval(expression);
+                display.value = result.toFixed(0); // 小数点以下を表示しないように変更
+                // データをローカルストレージに保存
+                localStorage.setItem('displayValue', result.toFixed(0));
+            }
+
+            function calculateTax() {
+                var display = document.getElementById('display');
+                var inputValue = parseFloat(display.value);
+                if (!isNaN(inputValue)) {
+                    var taxAmount = inputValue * 0.1;
+                    var totalPrice = inputValue + taxAmount;
+                    display.value = totalPrice.toFixed(0);
+                    // データをローカルストレージに保存
+                    localStorage.setItem('displayValue', totalPrice.toFixed(0));
+                } else {
+                    alert("有効な値を入力するかまたはフィールドを空白にしておいてください。");
+                }
+            }
+        </script>
 
     </div>
 </body>
