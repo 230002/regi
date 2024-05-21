@@ -37,7 +37,8 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             <?php foreach($sales as $sale): ?>
             <tr>
                 <td><?= $sale['created_at'] ?>　　</td>
-                <td><?= $sale['price'] ?>円</td>
+                <td style="text-align: right;"><?= $sale['price'] ?></td>
+                <td>円</td>
             </tr>
             <?php endforeach ?>
         </tbody>
