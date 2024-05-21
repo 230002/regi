@@ -71,8 +71,10 @@
             }
 
             function clearDisplay() {
-            var display = document.getElementById('display');
-            display.value = "";
+                var display = document.getElementById('display');
+                display.value = "";
+                // ローカルストレージからデータを削除
+                localStorage.removeItem('displayValue');
             }
 
             function calculateTotal() {
@@ -115,6 +117,13 @@
                 }
             };
             xhr.send(formData);
+        });
+
+        // 売上ページから戻ったときにディスプレイをクリア
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                clearDisplay(); // ディスプレイをクリア
+            }
         });
         </script>
 
