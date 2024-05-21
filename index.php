@@ -58,6 +58,12 @@
                 if (operator === "=" && display.value === "") {
                     return;
                 }
+                // 直前の文字が計算記号の場合はエラー文を表示して計算しない
+                var lastChar = display.value.slice(-1);
+                if (['+', '-', '*', '/'].includes(lastChar)) {
+                    alert("連続して計算記号を入力することはできません");
+                    return;
+                }
                 display.value += operator;
                 // データをローカルストレージに保存
                 localStorage.setItem('displayValue', display.value);
@@ -119,11 +125,12 @@
             xhr.send(formData);
         });
 
-        // 売上ページから戻ったときにディスプレイをクリア
+        // ページが再読み込みされたときにディスプレイをクリア
         window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                clearDisplay(); // ディスプレイをクリア
-            }
+            var display = document.getElementById('display');
+            display.value = "";
+            // ローカルストレージからデータを削除
+            localStorage.removeItem('displayValue');
         });
         </script>
 
