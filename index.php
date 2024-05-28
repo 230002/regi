@@ -12,12 +12,12 @@
 <body>
     <div class="bg-gray-200 flex justify-center items-center h-screen">
         <div class="calculator bg-white rounded p-8 shadow-md">
-        <form id="calculator-form" action="update.php" method="post">
+            <form id="calculator-form" action="update.php" method="post">
                 <input type="text" id="display" name="price" class="w-full mb-4 px-2 py-1 border rounded" readonly>
                 <button class="btn border w-12 h-8 mb-4">計上</button>
             </form>
             <div class="grid grid-cols-4 gap-4">
-            <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('7')">7</button>
+                <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('7')">7</button>
                 <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('8')">8</button>
                 <button class="btn border w-12 h-8 flex justify-center items-center" onclick="addToDisplay('9')">9</button>
                 <button class="btn border w-12 h-8 flex justify-center items-center" onclick="clearAll()">AC</button>
@@ -37,13 +37,13 @@
         </div>
 
         <script>
-            window.onload = function() {
+            window.addEventListener('load', function() {
                 var display = document.getElementById('display');
                 var savedValue = localStorage.getItem('displayValue');
                 if (savedValue) {
                     display.value = savedValue;
                 }
-            };
+            });
 
             var taxCalculated = false; // Taxが計算されたかどうかを示すフラグ
 
@@ -63,7 +63,7 @@
                 }
                 // 直前の文字が計算記号の場合はエラー文を表示して計算しない
                 var lastChar = display.value.slice(-1);
-                if (['+', '*',].includes(lastChar)) {
+                if (['+', '*', '×'].includes(lastChar)) {
                     alert("連続して計算記号を入力することはできません");
                     return;
                 }
@@ -79,13 +79,6 @@
                 // ローカルストレージからデータを削除
                 localStorage.removeItem('displayValue');
                 taxCalculated = false; // クリアされたのでTaxが再度計算可能になる
-            }
-
-            function clearDisplay() {
-                var display = document.getElementById('display');
-                display.value = "";
-                // ローカルストレージからデータを削除
-                localStorage.removeItem('displayValue');
             }
 
             function calculateTotal() {
@@ -120,29 +113,6 @@
                     alert("有効な値を入力するかまたはフィールドを空白にしておいてください。");
                 }
             }
-        // フォーム送信後にディスプレイをクリア
-        document.getElementById('calculator-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // デフォルトのフォーム送信を防ぐ
-
-            // データを送信するためにAjaxを使用
-            var formData = new FormData(this);
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "update.php", true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    clearDisplay(); // ディスプレイをクリア
-                }
-            };
-            xhr.send(formData);
-        });
-
-        // ページが再読み込みされたときにディスプレイをクリア
-        window.addEventListener('pageshow', function(event) {
-            var display = document.getElementById('display');
-            display.value = "";
-            // ローカルストレージからデータを削除
-            localStorage.removeItem('displayValue');
-        });
         </script>
 
     </div>
